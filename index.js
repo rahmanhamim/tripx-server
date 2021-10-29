@@ -26,16 +26,12 @@ async function run() {
   const database = client.db("tripx");
   const serviceCollection = database.collection("services");
 
-  const doc = {
-   name: "Paris Hill Tour",
-   img: "https://i.ibb.co/x76qZb4/tourPkg1.png",
-   price: "180",
-   rating: 3,
-   tourDays: "6",
-  };
-
-  const result = await serviceCollection.insertOne(doc);
-  console.log("added to db", result);
+  // GET API
+  app.get("/services", async (req, res) => {
+   const cursor = serviceCollection.find({});
+   const services = await cursor.toArray();
+   res.send(services);
+  });
  } finally {
   // await client.close();
  }
