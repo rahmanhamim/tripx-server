@@ -69,8 +69,6 @@ async function run() {
    res.json(result);
   });
 
-  // ------------------------------------------------------
-
   // GET ALL BOOKING FOR ADMIN
   app.get("/bookings", async (req, res) => {
    const cursor = bookingCollection.find({});
@@ -78,7 +76,16 @@ async function run() {
    res.send(services);
   });
 
-  // -------------------------------------------------------
+  // ------------------------------------------------------------------------
+  // POST API FOR NEW SERVICE
+  app.post("/services", async (req, res) => {
+   const service = req.body;
+   const result = await serviceCollection.insertOne(service);
+   console.log(result);
+   res.json(result);
+  });
+
+  // -------------------------------------------------------------------------
 
   //
   //
