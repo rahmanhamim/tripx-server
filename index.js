@@ -38,7 +38,7 @@ async function run() {
   // GET SINGLE SERVICE API
   app.get("/services/:id", async (req, res) => {
    const id = req.params.id;
-   console.log("getting specific service", id);
+   //  console.log("getting specific service", id);
    const query = { _id: ObjectId(id) };
    const service = await serviceCollection.findOne(query);
    res.send(service);
@@ -53,7 +53,7 @@ async function run() {
 
   // GET BOOKING BY EMAIL
   app.get("/bookings/:email", (req, res) => {
-   console.log(req.params);
+   //  console.log(req.params);
    bookingCollection
     .find({ email: req.params.email })
     .toArray((err, results) => {
@@ -76,19 +76,29 @@ async function run() {
    res.send(services);
   });
 
-  // ------------------------------------------------------------------------
   // POST API FOR NEW SERVICE
   app.post("/services", async (req, res) => {
    const service = req.body;
    const result = await serviceCollection.insertOne(service);
-   console.log(result);
+   //  console.log(result);
    res.json(result);
   });
 
-  // -------------------------------------------------------------------------
-
-  //
-  //
+  // PUT API UPDATE STATUS
+  app.put("/bookings/:id", (req, res) => {
+   const id = req.params.id;
+   const updatedInfo = req.body;
+   bookingCollection
+    .updateOne(
+     { _id: ObjectId(id) },
+     {
+      $set: {
+       status: updatedInfo.status,
+      },
+     }
+    )
+    .then((result) => res.send(result));
+  });
  } finally {
   // await client.close();
  }
