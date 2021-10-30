@@ -50,16 +50,6 @@ async function run() {
    const result = await bookingCollection.insertOne(order);
    res.json(result);
   });
-  // -----------------------------------------------------------------------------------------------------
-  // GET USER BOOKING DATA
-  // app.get("/bookings/:email", async (req, res) => {
-  //  const email = req.params?.email;
-  //  console.log("getting specific  user data", email);
-  //  const query = { email: email.toString() };
-  //  const result = await bookingCollection.find({ query }).toArray();
-  //  console.log(result);
-  //  res.json(result);
-  // });
 
   // GET BOOKING BY EMAIL
   app.get("/bookings/:email", (req, res) => {
@@ -71,7 +61,25 @@ async function run() {
     });
   });
 
-  // -----------------------------------------------------------------------------------------------------
+  // DELETE SINGLE USER ORDER API
+  app.delete("/bookings/:id", async (req, res) => {
+   const id = req.params.id;
+   const query = { _id: ObjectId(id) };
+   const result = await bookingCollection.deleteOne(query);
+   res.json(result);
+  });
+
+  // ------------------------------------------------------
+
+  // GET ALL BOOKING FOR ADMIN
+  app.get("/bookings", async (req, res) => {
+   const cursor = bookingCollection.find({});
+   const services = await cursor.toArray();
+   res.send(services);
+  });
+
+  // -------------------------------------------------------
+
   //
   //
  } finally {
